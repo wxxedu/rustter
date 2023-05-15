@@ -1,5 +1,3 @@
-use std::iter::Peekable;
-
 use proc_macro2::{Group, Ident, TokenStream, TokenTree};
 use quote::ToTokens;
 
