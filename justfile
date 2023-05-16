@@ -1,5 +1,9 @@
+build:
+  cd ./experiment/native/ && cargo build --release
+
 expand:
-  cd ./rs_example/ && cargo expand 
+  cd ./experiment/native/ && cargo expand 
 
 run:
-  cd ./rs_example/ && cargo run
+  cd ./experiment/native/ && cargo build --release 
+  cd ./experiment/ && dart run

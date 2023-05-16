@@ -4,11 +4,11 @@ use quote::ToTokens;
 
 extern crate proc_macro;
 
-mod flutter;
 mod parser;
+mod types;
 
 #[proc_macro_attribute]
-pub fn flutter(
+pub fn dart_fn(
     _attr: proc_macro::TokenStream,
     item: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
@@ -17,4 +17,13 @@ pub fn flutter(
     let mut token_stream = TokenStream::new();
     flutter.to_tokens(&mut token_stream);
     token_stream.into()
+}
+
+#[proc_macro_attribute]
+pub fn dart_struct(
+    _attr: proc_macro::TokenStream,
+    item: proc_macro::TokenStream,
+) -> proc_macro::TokenStream {
+    dbg!(&item);
+    item
 }

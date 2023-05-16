@@ -4,23 +4,23 @@ use proc_macro2::{Ident, TokenStream};
 use quote::ToTokens;
 
 #[derive(Debug, Clone)]
-pub struct FlutterParam {
+pub struct SingleMethodParam {
     ty: Ident,
     name: Ident,
 }
 
 #[derive(Debug, Clone)]
-pub struct FlutterParams {
-    params: Vec<FlutterParam>,
+pub struct MethodParams {
+    params: Vec<SingleMethodParam>,
 }
 
-impl Display for FlutterParam {
+impl Display for SingleMethodParam {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}: {}", self.name, self.ty)
     }
 }
 
-impl ToTokens for FlutterParam {
+impl ToTokens for SingleMethodParam {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         tokens.extend(
             format!("{}: {}, ", self.name, self.ty)
@@ -30,7 +30,7 @@ impl ToTokens for FlutterParam {
     }
 }
 
-impl Display for FlutterParams {
+impl Display for MethodParams {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let params = self
             .params
@@ -42,7 +42,7 @@ impl Display for FlutterParams {
     }
 }
 
-impl ToTokens for FlutterParams {
+impl ToTokens for MethodParams {
     fn to_tokens(&self, tokens: &mut proc_macro2::TokenStream) {
         for param in &self.params {
             param.to_tokens(tokens);
@@ -50,25 +50,25 @@ impl ToTokens for FlutterParams {
     }
 }
 
-impl Default for FlutterParams {
+impl Default for MethodParams {
     fn default() -> Self {
         Self { params: vec![] }
     }
 }
 
-impl FlutterParams {
-    pub fn add_param(&mut self, param: FlutterParam) {
+impl MethodParams {
+    pub fn add_param(&mut self, param: SingleMethodParam) {
         self.params.push(param);
     }
 }
 
 #[derive(Debug, Clone)]
-pub struct FlutterParamBuilder {
+pub struct ParamBuilder {
     ty: Option<Ident>,
     name: Option<Ident>,
 }
 
-impl FlutterParamBuilder {
+impl ParamBuilder {
     pub fn new() -> Self {
         Self {
             ty: None,
@@ -76,8 +76,8 @@ impl FlutterParamBuilder {
         }
     }
 
-    pub fn build(self) -> FlutterParam {
-        FlutterParam {
+    pub fn build(self) -> SingleMethodParam {
+        SingleMethodParam {
             ty: self.ty.expect("ty is required"),
             name: self.name.expect("name is required"),
         }
@@ -91,5 +91,9 @@ impl FlutterParamBuilder {
     pub fn name(mut self, name: Ident) -> Self {
         self.name = Some(name);
         self
+    }
+
+    pub fn can_build(&self) -> bool {
+        self.ty.is_some() && self.name.is_some()
     }
 }

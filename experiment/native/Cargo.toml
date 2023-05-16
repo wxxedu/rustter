@@ -1,9 +1,13 @@
 [package]
-name = "example"
+name = "native"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "native"
+crate-type = ["staticlib", "cdylib"]
 
 [dependencies]
-rustter = { path = "../rs" }
+lazy_static = "1.4.0"
+rustter = { path = "../../rs_macro/" }

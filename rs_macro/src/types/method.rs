@@ -1,17 +1,17 @@
-use super::{param::FlutterParams, return_type::FlutterReturnType};
+use super::{param::MethodParams, return_type::ReturnType};
 use proc_macro2::{Ident, TokenStream};
 use quote::{quote, ToTokens};
 use std::fmt::Display;
 
 #[derive(Debug, Clone)]
-pub struct FlutterMethod {
+pub struct Method {
     name: Ident,
-    args: FlutterParams,
-    return_type: FlutterReturnType,
+    args: MethodParams,
+    return_type: ReturnType,
     body: TokenStream,
 }
 
-impl Display for FlutterMethod {
+impl Display for Method {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(
             f,
@@ -21,7 +21,7 @@ impl Display for FlutterMethod {
     }
 }
 
-impl ToTokens for FlutterMethod {
+impl ToTokens for Method {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         let name = &self.name;
         let args = &self.args;
@@ -37,14 +37,14 @@ impl ToTokens for FlutterMethod {
 }
 
 #[derive(Debug, Clone)]
-pub struct FlutterMethodBuilder {
+pub struct MethodBuilder {
     name: Option<Ident>,
-    args: Option<FlutterParams>,
-    return_type: Option<FlutterReturnType>,
+    args: Option<MethodParams>,
+    return_type: Option<ReturnType>,
     body: Option<TokenStream>,
 }
 
-impl FlutterMethodBuilder {
+impl MethodBuilder {
     pub fn new() -> Self {
         Self {
             name: None,
@@ -54,8 +54,8 @@ impl FlutterMethodBuilder {
         }
     }
 
-    pub fn build(self) -> FlutterMethod {
-        FlutterMethod {
+    pub fn build(self) -> Method {
+        Method {
             name: self.name.expect("name is required"),
             args: self.args.expect("args is required"),
             return_type: self.return_type.expect("return_type is required"),
@@ -68,12 +68,12 @@ impl FlutterMethodBuilder {
         self
     }
 
-    pub fn args(mut self, args: FlutterParams) -> Self {
+    pub fn args(mut self, args: MethodParams) -> Self {
         self.args = Some(args);
         self
     }
 
-    pub fn return_type(mut self, return_type: FlutterReturnType) -> Self {
+    pub fn return_type(mut self, return_type: ReturnType) -> Self {
         self.return_type = Some(return_type);
         self
     }
